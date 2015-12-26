@@ -7,12 +7,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 public class Main {
 
+	private static final Runtime runtime = Runtime.getRuntime();
+	
 	private static final String TARGET_IMAGE_PATH = ".\\src\\main\\resources\\target.jpg";
 	private static BufferedImage targetImage = null;
 	private static int targetWidth;
@@ -21,9 +22,6 @@ public class Main {
 
 	private static final String SUB_IMAGE_DIR_PATH = ".\\src\\main\\resources\\orig_subs\\";
 	private static List<SubImage> subImages = new ArrayList<SubImage>();
-	//private static BufferedImage subImage = null;
-	//private static int subWidth;
-	//private static int subHeight;
 
 
 	private static final int SUB_IMAGE_DIMENSION = 1;	//pixels
@@ -41,11 +39,14 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		//System.out.println("hello world");
 
-		getSubs(SUB_IMAGE_DIR_PATH);
-
 		targetImage = ImageIO.read(new File(TARGET_IMAGE_PATH));
 		targetWidth = targetImage.getWidth();
 		targetHeight = targetImage.getHeight();
+		
+		//System.out.println("type: " + targetImage.getType());
+		//System.out.println(BufferedImage.TYPE_3BYTE_BGR);
+		
+		getSubs(SUB_IMAGE_DIR_PATH);
 
 		getRepresentitiveColors();
 
@@ -59,7 +60,7 @@ public class Main {
 		for(int fileIndex = 0; fileIndex < files.length; fileIndex++) {
 		//for(int fileIndex = 0; fileIndex < 10; fileIndex++) {
 			File file = files[fileIndex];
-			System.out.println(fileIndex + "/" + (files.length-1) + " - " + file);
+			System.out.println(fileIndex + "/" + (files.length-1) + " - " + file + " " + runtime.freeMemory());
 			
 			SubImage subImage = new SubImage(file);
 			subImages.add(subImage);
@@ -74,7 +75,7 @@ public class Main {
 		representitiveWidth = (int)Math.ceil(((double)targetWidth) / SUB_IMAGE_DIMENSION);
 		representitiveHeight = (int)Math.ceil(((double)targetHeight) / SUB_IMAGE_DIMENSION);
 		representitiveColors = new Color[representitiveWidth][representitiveHeight];
-
+		
 
 		for(int repX = 0; repX < representitiveWidth; repX++) {			//index into representative array
 			for(int repY = 0; repY < representitiveHeight; repY++) {
@@ -131,8 +132,9 @@ public class Main {
 		
 		
 		for(int baseCellX = 0; baseCellX < representitiveWidth; baseCellX++) {
+			System.out.println(baseCellX + " " + (representitiveWidth-1) + " " + runtime.freeMemory());
 			for(int baseCellY = 0; baseCellY < representitiveHeight; baseCellY++) {
-				System.out.println(baseCellX + " " + baseCellY + " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+				//System.out.println(baseCellX + " " + baseCellY + " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 				
 				//if already written on
 				if(squaresWritten[baseCellX][baseCellY]) {
@@ -208,7 +210,7 @@ public class Main {
 		
 		
 		
-
+		System.out.println("writing out this giant fucker");
 		File outputfile = new File(OUTPUT_IMAGE_PATH);
 		ImageIO.write(outputImage, "jpg", outputfile);
 	}

@@ -2,7 +2,6 @@ package markprojects;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -13,10 +12,9 @@ public class SubImage {
 
 	private static final int[] WIDTH_NUMERATOR    = {1, 2, 3, 4, 1, 3, 1, 2, 4, 1, 3};
 	private static final int[] HEIGHT_DENOMINATOR = {1, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4};
-	public static final int SIZE_ONE = 30;
+	public static final int SIZE_ONE = 65;
 
-
-	private BufferedImage image;
+	//private BufferedImage image;
 	private int origWidth;
 	private int origHeight;
 
@@ -34,9 +32,9 @@ public class SubImage {
 
 
 	public SubImage(File file) throws IOException {
-		this.image = ImageIO.read(file);
-		this.origWidth = this.image.getWidth();
-		this.origHeight = this.image.getHeight();
+		BufferedImage image = ImageIO.read(file);
+		this.origWidth = image.getWidth();
+		this.origHeight = image.getHeight();
 
 		origRatio = (double)origWidth / origHeight;
 		bestRatioIndex = -1;
@@ -51,7 +49,7 @@ public class SubImage {
 		}
 		bestRatio = (double)WIDTH_NUMERATOR[bestRatioIndex] / HEIGHT_DENOMINATOR[bestRatioIndex];
 
-		cropImage();
+		cropImage(image);
 		
 		getAverageColor();
 	}
@@ -64,7 +62,7 @@ public class SubImage {
 		return HEIGHT_DENOMINATOR[bestRatioIndex];
 	}
 
-	private void cropImage() {
+	private void cropImage(BufferedImage image) {
 		int x, y, w, h;
 
 		if(origRatio < bestRatio) {
@@ -81,7 +79,7 @@ public class SubImage {
 			x = (int)((origWidth - w)/2.0);
 		}
 
-		BufferedImage croppedImage = this.image.getSubimage(x, y, w, h);
+		BufferedImage croppedImage = image.getSubimage(x, y, w, h);
 		
 		cleanImage = new BufferedImage(
 				SIZE_ONE * WIDTH_NUMERATOR[bestRatioIndex], 
