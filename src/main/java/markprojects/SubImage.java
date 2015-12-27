@@ -12,7 +12,7 @@ public class SubImage {
 
 	private static final int[] WIDTH_NUMERATOR    = {1, 2, 3, 4, 1, 3, 1, 2, 4, 1, 3};
 	private static final int[] HEIGHT_DENOMINATOR = {1, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4};
-	public static final int SIZE_ONE = 65;
+	public static final int SIZE_ONE = 80;
 
 	//private BufferedImage image;
 	private int origWidth;

@@ -20,7 +20,8 @@ public class Main {
 	private static int targetHeight;
 
 
-	private static final String SUB_IMAGE_DIR_PATH = ".\\src\\main\\resources\\orig_subs\\";
+	//private static final String SUB_IMAGE_DIR_PATH = ".\\src\\main\\resources\\orig_subs\\";
+	private static final String SUB_IMAGE_DIR_PATH = ".\\src\\main\\resources\\imgur\\cats";
 	private static List<SubImage> subImages = new ArrayList<SubImage>();
 
 
